@@ -1,0 +1,61 @@
+body, html {
+  height: 100%;
+  width: 100%;
+}
+
+#intro {
+  opacity: 0;
+  display: flex;
+  justify-content: center;
+  height: 100%;
+}
+
+#intro h1 {
+  position: absolute;
+  bottom: 50%;
+  transform: translateY(40%);
+  /* animation-name: introMoveUp; defined in scripts.js */
+  /* animation-delay: defined in scripts.js */
+  /* animation-duration: defined in scripts.js */
+  animation-fill-mode: forwards;
+  animation-timing-function: ease;
+}
+
+.fade-in {
+  animation-name: fadeIn;
+  animation-duration: 1.8s;
+  animation-delay: 0.5s;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: forwards;
+}
+
+.fade-out {
+  animation-name: fadeOut;
+  /* animation-duration: defined in scripts.js */
+  animation-timing-function: ease;
+}
+
+#content {
+  display: none;
+  opacity: 0;
+  animation-name: fadeIn;
+  animation-fill-mode: forwards;
+  animation-duration: 1s;
+  animation-delay: 0s;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+@keyframes introMoveUp {
+  from { bottom: 50%; }
+  to { bottom: 70%; }
+}
