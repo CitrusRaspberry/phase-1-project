@@ -25,14 +25,24 @@ h1 {
 #intro-text {
     background: #fff;
 }
+.responsive-box {
+  width: 60%;
+  display: flex;
+  margin: auto;
+}
+@media (max-width: 1250px) {
+  .responsive-box {
+    width: 95%
+  }
+}
 #intro-content {
   opacity: 0;
-  display: flex;
-  width: 95%;
+  width: 100%;
 }
 .mode-container {
   flex: 25%;
   text-align: center;
+  float: right;
 }
 .fade-in {
   animation-name: fadeIn;
