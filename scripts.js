@@ -10,7 +10,8 @@ const lettersLeftTxt = content.querySelector("#letters-left");
 const originHdr = content.querySelector("#origin-header");
 const originTxt = content.querySelector("#origin-text");
 const defTxt = content.querySelector("#definition-text");
-let savedEvent;
+const score = content.querySelector("#score");
+let savedGameModeEvent;
 
 /////////////////////////////////////////////
 //// INTRO STYILING
@@ -45,7 +46,7 @@ function initMenu() {
   introButtons.forEach(button => button.addEventListener("click", initGame));
 }
 function initGame(e) {
-  savedEvent = e;
+  savedGameModeEvent = e;
   introAndContentSwap(e);
   let urlRandomWord = "https://random-word-form.herokuapp.com/random/";
   switch (e.target.name) {
@@ -67,11 +68,12 @@ function initGame(e) {
       break;
     default:
       console.error("MAYDAY!! URL CAN'T BE FOUND! WE'RE GOING DOWN!! *crash*");
+      alert("The dictionary cannot be reached. Please tell the developer to look at API URLs.");
   }
   getRandomWord(urlRandomWord);
 }
 function renderGame(wordObj) {
-  console.log("YAY", wordObj);
+  console.log("Word object -->", wordObj);
   defTxt.textContent = wordObj.meanings[0].definitions[0].definition;
   if (wordObj.origin) {
     originTxt.textContent = wordObj.origin;
@@ -85,10 +87,38 @@ function renderGame(wordObj) {
     newLetter.className = "word-letter";
     wordContainer.append(newLetter);
   }
-  startGame();
+  startGame(wordObj);
 }
-function startGame() {
-  // letterBtns.forEach(btn => btn.addEventListener("click", ));
+function startGame(wordObj) {
+  const wordAnswerAsArray = [...wordObj.word.toUpperCase()]
+  letterBtns.forEach(btn => btn.addEventListener("click", e => processInput(e, wordAnswerAsArray)));
+}
+function processInput(e, wordAnswerAsArray) {
+  const letterGuessed = e.target.textContent;
+  if (isLetterMatch(letterGuessed, wordAnswerAsArray)) {
+    const indexNums = findIndexNums(letterGuessed, wordAnswerAsArray);
+    updateWordGuess(indexNums, letterGuessed);
+  } else {
+    console.log("Too badd...");
+  }
+}
+function findIndexNums(letterGuessed, wordAnswerAsArray) {
+  const indexNums = [];
+  for (let i = 0; i < wordAnswerAsArray.length; i++) {
+    const letter = wordAnswerAsArray[i];
+    if (letter === letterGuessed) {
+      indexNums.push(i);
+    }
+  }
+  return indexNums;
+}
+function updateWordGuess(indexNums, letterGuessed) {
+  const letterElements = [...wordContainer.children];
+  indexNums.forEach(index => letterElements[index].textContent = letterGuessed);
+}
+function isLetterMatch(letter, wordAnswerAsArray) {
+  const isMatch = wordAnswerAsArray.indexOf(letter) >= 0;
+  return isMatch;
 }
 function fetchGET(url, cb, randomWordIfError) {
   fetch(url)
