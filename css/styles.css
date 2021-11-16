@@ -56,7 +56,10 @@ h1, h2 {
 #definition-container {
   position: absolute;
   bottom: 25%;
-  transform: translateY(-50px);
+  /* Changes based on size */
+  width: 75%;
+  left: 50%;
+  transform: translate(-50%, -50px);
 }
 #form-container {
   position: absolute;
@@ -66,11 +69,17 @@ h1, h2 {
 #letters-container button.letter {
   /* Stuff that changes with size */
   width: 2.5%;
-
   /* Stuff that doesn't change with size */
   font-weight: bold;
   padding: 0.5%;
   margin: 0.5%;
+}
+.word-letter {
+  width: 100%;
+  margin: 5% 3%;
+  text-align: center;
+  border-bottom: 2px red solid;
+  font-size: 3em;
 }
 button {
   border: 1px solid #333;
@@ -167,6 +176,11 @@ button.big {
 @media (max-width: 1250px) {
   .responsive-box {
     width: 95%
+  }
+  #definition-container {
+    width: 100%;
+    left: auto;
+    transform: translate(0, -50px);
   }
 }
 @media (max-width: 1150px) {
