@@ -2,17 +2,19 @@ body, html {
   height: 100%;
   width: 100%;
 }
-
+h1 {
+  text-align: center;
+}
 #intro {
   opacity: 0;
   display: flex;
   justify-content: center;
   height: 100%;
 }
-
-#intro h1 {
+#intro-container {
   position: absolute;
-  bottom: 50%;
+  width: 100%;
+  bottom: 40%;
   transform: translateY(40%);
   /* animation-name: introMoveUp; defined in scripts.js */
   /* animation-delay: defined in scripts.js */
@@ -20,7 +22,18 @@ body, html {
   animation-fill-mode: forwards;
   animation-timing-function: ease;
 }
-
+#intro-text {
+    background: #fff;
+}
+#intro-content {
+  opacity: 0;
+  display: flex;
+  width: 95%;
+}
+.mode-container {
+  flex: 25%;
+  text-align: center;
+}
 .fade-in {
   animation-name: fadeIn;
   animation-duration: 1.8s;
@@ -28,7 +41,6 @@ body, html {
   animation-timing-function: ease-in-out;
   animation-fill-mode: forwards;
 }
-
 .fade-out {
   animation-name: fadeOut;
   /* animation-duration: defined in scripts.js */
@@ -47,6 +59,75 @@ body, html {
   margin: 0;
 }
 
+button {
+  border: 1px solid #333;
+  border-radius: 32px;
+  padding: 15px 18px 30px 15px;
+  cursor: pointer;
+  height:32px;
+  font-size:14px;
+  box-shadow: 0 0 4px #999;
+  background-position: center;
+  transition: background 0.8s;
+}
+button:hover {
+  color: white;
+}
+button.green {
+  background-color: #293e2a;
+  color: #1df28c;
+  border-color: #1df28c;
+}
+button.green:hover {
+  background:#8ed138 radial-gradient(circle, transparent 1%, #8ed138 1%) center/15000%;
+  border-color: #8ed138;
+  color: white;
+}
+button.green:active {
+  background-color:#293e30;
+  background-size: 100%;
+  transition: background 0s;
+}
+button.blue {
+  background-color: #292D3E;
+  color: #1D9AF2;
+  border-color: #1D9AF2;
+}
+button.blue:hover {
+  background:#47a7f5 radial-gradient(circle, transparent 1%, #47a7f5 1%) center/15000%;
+  color: white;
+}
+button.blue:active {
+  background-color:#292d3e;
+  background-size: 100%;
+  transition: background 0s;
+}
+button.red {
+  background-color: #3e2929;
+  color: #f26a1d;
+  border-color: #f26a1d;
+}
+button.red:hover {
+  background:#f55747 radial-gradient(circle, transparent 1%, #f55747 1%) center/15000%;
+  color: white;
+}
+button.red:active {
+  background-color:#3e2929;
+  background-size: 100%;
+  transition: background 0s;
+}
+button.big {
+  height:64px;
+  font-size:28px;
+  border-radius: 64px;
+  width: 90%;
+}
+
+#content button {
+  height:32px;
+  font-size:14px;
+}
+
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
@@ -56,6 +137,5 @@ body, html {
   to { opacity: 0; }
 }
 @keyframes introMoveUp {
-  from { bottom: 50%; }
-  to { bottom: 70%; }
+  to { bottom: 50%; }
 }

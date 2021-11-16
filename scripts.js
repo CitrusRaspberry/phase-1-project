@@ -2,13 +2,14 @@
 // In seconds
 const transitionDuration = 1;
 const introMoveUpDuration = 0.4;
-const introMoveUpDelay = 2;
+const introMoveUpDelay = 1.5;
 
 /////////////////////////////////////////////
 // STYILING
 const content = document.querySelector("#content");
 const intro = document.querySelector("#intro");
-const introText = document.querySelector("#intro h1");
+const introContainer = document.querySelector("#intro-container");
+const introContent = document.querySelector("#intro-content");
 
 function introAndContentSwap() {
   intro.className = "fade-out";
@@ -21,9 +22,9 @@ function introAndContentSwap() {
 }
 function introMoveUp() {
   setTimeout( () => {
-    introText.style.animationDuration = `${introMoveUpDuration}s`;
-    introText.style.animationName = "introMoveUp";
-    // setTimeout( () => introText.style.position = "", introMoveUpDuration * 1000 )
+    introContainer.style.animationDuration = `${introMoveUpDuration}s`;
+    introContainer.style.animationName = "introMoveUp";
+    introContent.className += " fade-in";
   }, introMoveUpDelay * 1000)
 }
 
