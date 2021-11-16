@@ -12,7 +12,7 @@ const urlDictionary = "https://api.dictionaryapi.dev/api/v2/entries/en/";
 // in seconds
 const transitionDuration = 1;
 const introMoveUpDuration = 0.4;
-const introMoveUpDelay = 1.5;
+const introMoveUpDelay = 2.5;
 
 function introAndContentSwap(e) {
   console.log("Gamemode picked:", e.target.name);
