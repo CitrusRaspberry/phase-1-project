@@ -128,8 +128,8 @@ button.blue:active {
 }
 button.red {
   background-color: #3e2929;
-  color: #df8c37;
-  border-color: #df8c37;
+  color: #e19445;
+  border-color: #e19445;
 }
 button.red:hover {
   background:#ff972b radial-gradient(circle, transparent 1%, #ff972b 1%) center/15000%;
