@@ -63,17 +63,14 @@ h1, h2 {
   height: 25%;
   bottom: 0;
 }
-.letter {
+#letters-container button.letter {
   /* Stuff that changes with size */
-  width: 2%;
-  height: 2%;
+  width: 2.5%;
+
+  /* Stuff that doesn't change with size */
+  font-weight: bold;
   padding: 0.5%;
   margin: 0.5%;
-  /* Stuff that doesn't change with size */
-  font-size: 200%;
-  font-weight: bold;
-  cursor: pointer;
-
 }
 button {
   border: 1px solid #333;
@@ -139,10 +136,6 @@ button.big {
   width: 90%;
 }
 
-#content button {
-  height:32px;
-  font-size:14px;
-}
 .fade-in {
   animation-name: fadeIn;
   animation-duration: 1.8s;
@@ -166,14 +159,33 @@ button.big {
 @keyframes introMoveUp {
   to { bottom: 50%; }
 }
+@media (max-width: 1750px) {
+  #letters-container button.letter {
+    width: 3.75%;
+  }
+}
 @media (max-width: 1250px) {
   .responsive-box {
     width: 95%
   }
-  .letter {
-    width: 3%;
-    height: 3%;
-    padding: 1%;
-    margin: 1%;
+}
+@media (max-width: 1150px) {
+  #letters-container button.letter {
+    width: 10%;
+  }
+}
+@media (max-width: 800px) {
+  button.big {
+    height:48px;
+    font-size:21px;
+    border-radius: 48px;
+  }
+  #intro button.big {
+    height:56px;
+  }
+}
+@media (max-width: 650px) {
+  .responsive-box {
+    display: block;
   }
 }

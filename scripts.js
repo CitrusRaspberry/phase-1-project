@@ -3,7 +3,7 @@ const introContainer = intro.querySelector("#intro-container");
 const introContent = introContainer.querySelector("#intro-content");
 const introButtons = introContent.querySelectorAll("button");
 const content = document.querySelector("#content");
-const submitGuessBtn = content.querySelector("button");
+const letterBtns = content.querySelectorAll("button.letter");
 const urlDictionary = "https://api.dictionaryapi.dev/api/v2/entries/en/";
 
 /////////////////////////////////////////////
@@ -50,19 +50,19 @@ function initGame(e) {
   switch (e.target.name) {
     case "noun":
       urlRandomWord += "noun";
-      submitGuessBtn.className = "green";
+      letterBtns.forEach(letter => letter.classList.add("green"));
       break;
     case "adjective":
       urlRandomWord += "adjective";
-      submitGuessBtn.className = "green";
+      letterBtns.forEach(letter => letter.classList.add("green"));
       break;
     case "animal":
       urlRandomWord += "animal";
-      submitGuessBtn.className = "blue";
+      letterBtns.forEach(letter => letter.classList.add("blue"));
       break;
     case "everything":
       urlRandomWord = "https://random-word-api.herokuapp.com/word?number=1&swear=0";
-      submitGuessBtn.className = "red";
+      letterBtns.forEach(letter => letter.classList.add("red"));
       break;
     default:
       console.error("MAYDAY!! URL CAN'T BE FOUND! WE'RE GOING DOWN!! *crash*");
