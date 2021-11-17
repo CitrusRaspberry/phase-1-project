@@ -250,7 +250,7 @@ button.small {
     font-size: 1.5em;
   }
 }
-@media (max-width: 400px) {
+@media (max-width: 414px) {
   #popup {
     width: 100%;
   }

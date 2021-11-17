@@ -31,6 +31,7 @@ function init() {
   const contentOutDuration = 0.75;
   const introMoveUpDuration = 0.4;
   const introMoveUpDelay = 2;
+  const popupOutDuration = 0.5;
 
   function sceneSwap(e, sceneOut, sceneIn, outDuration, inDuration) {
     console.log("Gamemode picked:", e.target.name);
@@ -58,6 +59,7 @@ function init() {
   function resetGame() {
     wordAnswerAsArray = [...wordObj.word.toUpperCase()];
     badPoints = 0;
+
   }
   function resetStyle() {
     wordContainer.replaceChildren();
@@ -66,6 +68,9 @@ function init() {
     defTxt.textContent = "loading...";
     originTxt.style.display = "none";
     originHdr.style.display = "none";
+    confetti.stop();
+    popBtns.forEach(btn => btn.className = "small");
+    letterBtns.forEach(btn => btn.className = "letter big");
   }
   function createSpacer() {
     const firstLetter = wordContainer.firstChild;
@@ -88,8 +93,16 @@ function init() {
   function initRestart(e) {
     sceneSwap(e, content, intro, contentOutDuration, introInDuration);
   }
+  function removePopup() {
+    popup.style.animationDuration = `${popupOutDuration}s`;
+    popup.classList.add("fade-out");
+    setTimeout(() => {
+      popup.style.display = "none";
+      popup.classList.remove("fade-out");
+    }, popupOutDuration * 1000);
+  }
   function initGame(e) {
-    popup.style.display = "none";
+    removePopup();
     savedGameModeEvent = e;
     sceneSwap(e, intro, content, introOutDuration, contentInDuration);
     let urlRandomWord = "https://random-word-form.herokuapp.com/random/";
@@ -115,9 +128,9 @@ function init() {
         console.error("MAYDAY!! URL CAN'T BE FOUND! WE'RE GOING DOWN!! *crash*");
         alert("The dictionary cannot be reached. Please ask the developer to look at API URLs.");
     }
+    resetStyle();
     cngBtnsColor(letterBtns, color);
     cngBtnsColor(popBtns, color);
-    resetStyle();
     getRandomWord(urlRandomWord);
   }
   function renderGame() {
@@ -150,13 +163,21 @@ function init() {
     }
   }
   function startGame() {
+    document.removeEventListener("keydown", processInput);
+    document.addEventListener("keydown", processInput);
     letterBtns.forEach(btn => {
       btn.removeEventListener("click", processInput);
       btn.addEventListener("click", processInput);
     });
+
   }
   function processInput(e) {
-    const letterGuessed = e.target.textContent;
+    let letterGuessed;
+    if (e.type === "keydown") {
+      letterGuessed = e.key.toUpperCase();
+    } else if (e.type === "click") {
+      letterGuessed = e.target.textContent;
+    }
     if (isLetterMatch(letterGuessed)) {
       const indexNums = findIndexNums(letterGuessed);
       deleteSpacer();
@@ -175,6 +196,8 @@ function init() {
   }
   function winScreen() {
     popup.style.display = "block";
+    confetti.start();
+    setTimeout(confetti.stop, 3000);
   }
   function findIndexNums(letterGuessed) {
     const indexNums = [];
