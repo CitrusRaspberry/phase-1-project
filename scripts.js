@@ -19,11 +19,11 @@ function init() {
   let savedGameModeEvent;
   let badPoints = 0;
 
-  // 
-  // function reset() {
-  //   badPoints = 0;
-  //
-  // }
+  
+  function reset() {
+    badPoints = 0;
+
+  }
 
   /////////////////////////////////////////////
   //// INTRO STYILING
