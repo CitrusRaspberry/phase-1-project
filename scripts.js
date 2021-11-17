@@ -5,6 +5,7 @@ function init() {
   const introButtons = introContent.querySelectorAll("button");
   const content = document.querySelector("#content");
   const letterBtns = content.querySelectorAll("button.letter");
+  const formContainer = content.querySelector("#form-container");
   const wordContainer = content.querySelector("#word-container");
   const lettersLeftTxt = content.querySelector("#letters-left");
   const originHdr = content.querySelector("#origin-header");
@@ -17,6 +18,12 @@ function init() {
   const btnChangeMode = content.querySelector("#popup button#change-mode");
   let savedGameModeEvent;
   let badPoints = 0;
+
+  // 
+  // function reset() {
+  //   badPoints = 0;
+  //
+  // }
 
   /////////////////////////////////////////////
   //// INTRO STYILING
@@ -52,7 +59,7 @@ function init() {
     btnChangeMode.addEventListener("click", initRestart)
   }
   function initRestart() {
-    
+
   }
   function initGame(e) {
     popup.style.display = "none";
@@ -104,7 +111,11 @@ function init() {
   }
   function startGame(wordObj) {
     const wordAnswerAsArray = [...wordObj.word.toUpperCase()]
-    letterBtns.forEach(btn => btn.addEventListener("click", e => processInput(e, wordAnswerAsArray, badPoints)));
+    letterBtns.forEach(btn => {
+      const handler = e => processInput(e, wordAnswerAsArray);
+      btn.removeEventListener("click", handler);
+      btn.addEventListener("click", handler);
+    });
   }
   function processInput(e, wordAnswerAsArray) {
     const letterGuessed = e.target.textContent;
