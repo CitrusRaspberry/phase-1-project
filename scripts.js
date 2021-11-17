@@ -57,15 +57,27 @@ function init() {
   //// GAME LOGIC
   function resetGame() {
     wordAnswerAsArray = [...wordObj.word.toUpperCase()];
-    score.textContent = `${badPoints} bad points`;
+    badPoints = 0;
   }
   function resetStyle() {
-    badPoints = 0;
     wordContainer.replaceChildren();
     score.textContent = "";
+    lettersLeftTxt.textContent = "";
     defTxt.textContent = "loading...";
     originTxt.style.display = "none";
     originHdr.style.display = "none";
+  }
+  function createSpacer() {
+    const firstLetter = wordContainer.firstChild;
+    firstLetter.textContent = ".";
+    firstLetter.style.color = "white";
+  }
+  function deleteSpacer() {
+    const firstLetter = wordContainer.firstChild;
+    if (firstLetter.textContent === ".") {
+      firstLetter.textContent = "";
+      firstLetter.style.color = "";
+    }
   }
   function initMenu() {
     introMoveUp();
@@ -110,6 +122,7 @@ function init() {
   }
   function renderGame() {
     console.log("Word object -->", wordObj);
+    score.textContent = `${badPoints} bad points`;
     defTxt.textContent = wordObj.meanings[0].definitions[0].definition;
     if (wordObj.origin) {
       originTxt.textContent = wordObj.origin;
@@ -122,6 +135,7 @@ function init() {
       newLetter.className = "word-letter";
       wordContainer.append(newLetter);
     }
+    createSpacer();
     startGame();
   }
   function startGame() {
@@ -134,6 +148,7 @@ function init() {
     const letterGuessed = e.target.textContent;
     if (isLetterMatch(letterGuessed)) {
       const indexNums = findIndexNums(letterGuessed);
+      deleteSpacer();
       updateWordGuess(indexNums, letterGuessed);
     } else {
       score.textContent = `${++badPoints} bad points`;
@@ -189,6 +204,7 @@ function init() {
       const isSuccess = !!data[0];
       if (isSuccess) {
         wordObj = data[0];
+        // wordObj.word = "for testing";
         resetGame();
         renderGame();
       } else {
