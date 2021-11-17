@@ -11,6 +11,10 @@ function init() {
   const originTxt = content.querySelector("#origin-text");
   const defTxt = content.querySelector("#definition-text");
   const score = content.querySelector("#score");
+  const popup = content.querySelector("#popup-container");
+  const popBtns = content.querySelectorAll("#popup button");
+  const btnPlayAgain = content.querySelector("#popup button#play-again");
+  const btnChangeMode = content.querySelector("#popup button#change-mode");
   let savedGameModeEvent;
   let badPoints = 0;
 
@@ -44,32 +48,41 @@ function init() {
   function initMenu() {
     introMoveUp();
     introButtons.forEach(button => button.addEventListener("click", initGame));
+    btnPlayAgain.addEventListener("click", e => initGame(savedGameModeEvent));
+    btnChangeMode.addEventListener("click", initRestart)
+  }
+  function initRestart() {
+    
   }
   function initGame(e) {
+    popup.style.display = "none";
     savedGameModeEvent = e;
     introAndContentSwap(e);
     let urlRandomWord = "https://random-word-form.herokuapp.com/random/";
+    let color;
     switch (e.target.name) {
       case "noun":
+        color = "green";
         urlRandomWord += "noun";
-        letterBtns.forEach(letter => letter.classList.add("green"));
         break;
       case "adjective":
+        color = "green";
         urlRandomWord += "adjective";
-        letterBtns.forEach(letter => letter.classList.add("green"));
         break;
       case "animal":
+        color = "blue";
         urlRandomWord += "animal";
-        letterBtns.forEach(letter => letter.classList.add("blue"));
         break;
       case "everything":
+        color = "red";
         urlRandomWord = "https://random-word-api.herokuapp.com/word?number=1&swear=0";
-        letterBtns.forEach(letter => letter.classList.add("red"));
         break;
       default:
         console.error("MAYDAY!! URL CAN'T BE FOUND! WE'RE GOING DOWN!! *crash*");
         alert("The dictionary cannot be reached. Please ask the developer to look at API URLs.");
     }
+    cngBtnsColor(letterBtns, color);
+    cngBtnsColor(popBtns, color);
     getRandomWord(urlRandomWord);
   }
   function renderGame(wordObj) {
@@ -107,11 +120,11 @@ function init() {
     const wordGuessElements = [...wordContainer.children];
     const wordGuessed = wordGuessElements.map(element => element.textContent).join("");
     if (wordAnswerAsString === wordGuessed) {
-      console.log("YOU WON!!!");
+      winScreen();
     }
   }
   function winScreen() {
-    
+    popup.style.display = "block";
   }
   function findIndexNums(letterGuessed, wordAnswerAsArray) {
     const indexNums = [];
@@ -130,6 +143,9 @@ function init() {
   function isLetterMatch(letter, wordAnswerAsArray) {
     const isMatch = wordAnswerAsArray.indexOf(letter) >= 0;
     return isMatch;
+  }
+  function cngBtnsColor(btnsObj, color) {
+    btnsObj.forEach(btn => btn.classList.add(color))
   }
   function fetchGET(url, cb, randomWordIfError) {
     fetch(url)
