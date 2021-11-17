@@ -55,10 +55,17 @@ function init() {
 
   /////////////////////////////////////////////////////
   //// GAME LOGIC
-  function reset() {
-    badPoints = 0;
+  function resetGame() {
     wordAnswerAsArray = [...wordObj.word.toUpperCase()];
+    score.textContent = `${badPoints} bad points`;
+  }
+  function resetStyle() {
+    badPoints = 0;
     wordContainer.replaceChildren();
+    score.textContent = "";
+    defTxt.textContent = "loading...";
+    originTxt.style.display = "none";
+    originHdr.style.display = "none";
   }
   function initMenu() {
     introMoveUp();
@@ -98,6 +105,7 @@ function init() {
     }
     cngBtnsColor(letterBtns, color);
     cngBtnsColor(popBtns, color);
+    resetStyle();
     getRandomWord(urlRandomWord);
   }
   function renderGame() {
@@ -181,7 +189,7 @@ function init() {
       const isSuccess = !!data[0];
       if (isSuccess) {
         wordObj = data[0];
-        reset();
+        resetGame();
         renderGame();
       } else {
         getRandomWord(urlRandomWord);
