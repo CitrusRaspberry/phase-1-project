@@ -47,7 +47,7 @@ h1, h2 {
   opacity: 0;
   animation-name: fadeIn;
   animation-fill-mode: forwards;
-  animation-duration: 1s;
+  /* animation-duration: defined in scripts.js */
   animation-delay: 0s;
   height: 100%;
   width: 100%;

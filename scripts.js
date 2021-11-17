@@ -25,18 +25,25 @@ function init() {
   //// INTRO STYILING
   // CONFIG
   // in seconds
-  const transitionDuration = 1;
+  const introOutDuration = 1;
+  const contentInDuration = 1;
+  const introInDuration = 0.5;
+  const contentOutDuration = 0.75;
   const introMoveUpDuration = 0.4;
   const introMoveUpDelay = 2.5;
 
-  function introAndContentSwap(e) {
+  function sceneSwap(e, sceneOut, sceneIn, outDuration, inDuration) {
     console.log("Gamemode picked:", e.target.name);
-    intro.className = "fade-out";
-    intro.style.animationDuration = `${transitionDuration}s`
+    sceneOut.className = "fade-out";
+    sceneOut.style.animationName = "fadeOut";
+    sceneOut.style.animationDuration = `${outDuration}s`
+    sceneIn.className = "fade-in";
+    sceneIn.style.animationName = "fadeIn";
+    sceneIn.style.animationDuration = `${inDuration}s`
     setTimeout( () => {
-      content.style.display = "block";
-      intro.style.display = "none";
-    }, transitionDuration * 1000 );
+      sceneOut.style.display = "none";
+      sceneIn.style.display = "block";
+    }, outDuration * 1000 );
   }
   function introMoveUp() {
     setTimeout( () => {
@@ -51,6 +58,7 @@ function init() {
   function reset() {
     badPoints = 0;
     wordAnswerAsArray = [...wordObj.word.toUpperCase()];
+    wordContainer.replaceChildren();
   }
   function initMenu() {
     introMoveUp();
@@ -58,13 +66,13 @@ function init() {
     btnPlayAgain.addEventListener("click", e => initGame(savedGameModeEvent));
     btnChangeMode.addEventListener("click", initRestart)
   }
-  function initRestart() {
-
+  function initRestart(e) {
+    sceneSwap(e, content, intro, contentOutDuration, introInDuration);
   }
   function initGame(e) {
     popup.style.display = "none";
     savedGameModeEvent = e;
-    introAndContentSwap(e);
+    sceneSwap(e, intro, content, introOutDuration, contentInDuration);
     let urlRandomWord = "https://random-word-form.herokuapp.com/random/";
     let color;
     switch (e.target.name) {
@@ -101,7 +109,6 @@ function init() {
       originHdr.style.display = "";
     }
     lettersLeftTxt.textContent = `${wordObj.word.length} letters left`;
-    wordContainer.replaceChildren();
     for (letter of wordObj.word) {
       const newLetter = document.createElement("div")
       newLetter.className = "word-letter";
