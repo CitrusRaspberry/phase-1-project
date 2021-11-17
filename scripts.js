@@ -30,7 +30,7 @@ function init() {
   const introInDuration = 0.5;
   const contentOutDuration = 0.75;
   const introMoveUpDuration = 0.4;
-  const introMoveUpDelay = 2.5;
+  const introMoveUpDelay = 2;
 
   function sceneSwap(e, sceneOut, sceneIn, outDuration, inDuration) {
     console.log("Gamemode picked:", e.target.name);
@@ -136,7 +136,18 @@ function init() {
       wordContainer.append(newLetter);
     }
     createSpacer();
+    fillSpecialChars();
     startGame();
+  }
+  function fillSpecialChars() {
+    const specialChars = ["-", " "];
+    for (char of specialChars) {
+      const letterGuessed = char;
+      if (isLetterMatch(letterGuessed)) {
+        const indexNums = findIndexNums(letterGuessed);
+        updateWordGuess(indexNums, letterGuessed, true);
+      }
+    }
   }
   function startGame() {
     letterBtns.forEach(btn => {
@@ -175,9 +186,14 @@ function init() {
     }
     return indexNums;
   }
-  function updateWordGuess(indexNums, letterGuessed) {
+  function updateWordGuess(indexNums, letterGuessed, isSpecialChar = false) {
     const letterElements = [...wordContainer.children];
-    indexNums.forEach(index => letterElements[index].textContent = letterGuessed);
+    indexNums.forEach(index => {
+      letterElements[index].textContent = letterGuessed;
+      if (isSpecialChar) {
+        letterElements[index].style.borderBottom = "none";
+      }
+    });
   }
   function isLetterMatch(letter) {
     const isMatch = wordAnswerAsArray.indexOf(letter) >= 0;
@@ -204,7 +220,7 @@ function init() {
       const isSuccess = !!data[0];
       if (isSuccess) {
         wordObj = data[0];
-        // wordObj.word = "for testing";
+        // wordObj.word = "for testing"; UNCOMMENT if you want to choose the word
         resetGame();
         renderGame();
       } else {
