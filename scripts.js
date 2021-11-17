@@ -18,12 +18,8 @@ function init() {
   const btnChangeMode = content.querySelector("#popup button#change-mode");
   let savedGameModeEvent;
   let badPoints = 0;
-
-  
-  function reset() {
-    badPoints = 0;
-
-  }
+  let wordObj;
+  let wordAnswerAsArray;
 
   /////////////////////////////////////////////
   //// INTRO STYILING
@@ -52,6 +48,10 @@ function init() {
 
   /////////////////////////////////////////////////////
   //// GAME LOGIC
+  function reset() {
+    badPoints = 0;
+    wordAnswerAsArray = [...wordObj.word.toUpperCase()];
+  }
   function initMenu() {
     introMoveUp();
     introButtons.forEach(button => button.addEventListener("click", initGame));
@@ -92,7 +92,7 @@ function init() {
     cngBtnsColor(popBtns, color);
     getRandomWord(urlRandomWord);
   }
-  function renderGame(wordObj) {
+  function renderGame() {
     console.log("Word object -->", wordObj);
     defTxt.textContent = wordObj.meanings[0].definitions[0].definition;
     if (wordObj.origin) {
@@ -107,20 +107,18 @@ function init() {
       newLetter.className = "word-letter";
       wordContainer.append(newLetter);
     }
-    startGame(wordObj);
+    startGame();
   }
-  function startGame(wordObj) {
-    const wordAnswerAsArray = [...wordObj.word.toUpperCase()]
+  function startGame() {
     letterBtns.forEach(btn => {
-      const handler = e => processInput(e, wordAnswerAsArray);
-      btn.removeEventListener("click", handler);
-      btn.addEventListener("click", handler);
+      btn.removeEventListener("click", processInput);
+      btn.addEventListener("click", processInput);
     });
   }
-  function processInput(e, wordAnswerAsArray) {
+  function processInput(e) {
     const letterGuessed = e.target.textContent;
-    if (isLetterMatch(letterGuessed, wordAnswerAsArray)) {
-      const indexNums = findIndexNums(letterGuessed, wordAnswerAsArray);
+    if (isLetterMatch(letterGuessed)) {
+      const indexNums = findIndexNums(letterGuessed);
       updateWordGuess(indexNums, letterGuessed);
     } else {
       score.textContent = `${++badPoints} bad points`;
@@ -137,7 +135,7 @@ function init() {
   function winScreen() {
     popup.style.display = "block";
   }
-  function findIndexNums(letterGuessed, wordAnswerAsArray) {
+  function findIndexNums(letterGuessed) {
     const indexNums = [];
     for (let i = 0; i < wordAnswerAsArray.length; i++) {
       const letter = wordAnswerAsArray[i];
@@ -151,7 +149,7 @@ function init() {
     const letterElements = [...wordContainer.children];
     indexNums.forEach(index => letterElements[index].textContent = letterGuessed);
   }
-  function isLetterMatch(letter, wordAnswerAsArray) {
+  function isLetterMatch(letter) {
     const isMatch = wordAnswerAsArray.indexOf(letter) >= 0;
     return isMatch;
   }
@@ -174,7 +172,13 @@ function init() {
     const urlDictionary = "https://api.dictionaryapi.dev/api/v2/entries/en/";
     fetchGET(urlDictionary + word, data => {
       const isSuccess = !!data[0];
-      isSuccess ? renderGame(data[0]) : getRandomWord(urlRandomWord);
+      if (isSuccess) {
+        wordObj = data[0];
+        reset();
+        renderGame();
+      } else {
+        getRandomWord(urlRandomWord);
+      }
     });
   }
 
