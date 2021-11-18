@@ -56,10 +56,12 @@ h1, h2 {
 #definition-container {
   position: absolute;
   bottom: 25%;
+  padding-top: 0;
   /* Changes based on size */
   width: 55%;
   left: 50%;
   transform: translate(-50%, -50px);
+  /* --------------------- */
 }
 #form-container {
   position: absolute;
