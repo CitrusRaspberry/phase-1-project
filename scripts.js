@@ -61,6 +61,9 @@ function init() {
     wordAnswerAsArray = [...wordObj.word.toUpperCase()];
     badPoints = 0;
     guessedLetters = [];
+    for (btn of letterBtns) {
+      btn.disabled = false;
+    }
   }
   function resetStyle() {
     wordContainer.replaceChildren();
@@ -274,4 +277,4 @@ function init() {
   initMenu();
 }
 
-init();
+document.addEventListener("DOMContentLoaded", init)
