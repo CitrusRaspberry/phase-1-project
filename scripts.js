@@ -149,11 +149,7 @@ function init() {
     console.log("Word object -->", wordObj);
     score.textContent = `${badPoints} bad points`;
     defTxt.textContent = wordObj.meanings[0].definitions[0].definition;
-    if (wordObj.origin) {
-      originTxt.textContent = wordObj.origin;
-      originTxt.style.display = "";
-      originHdr.style.display = "";
-    }
+    setOrigin();
     lettersLeftTxt.textContent = `${wordObj.word.length} letters left`;
     for (letter of wordObj.word) {
       const newLetter = document.createElement("div")
@@ -163,6 +159,17 @@ function init() {
     createSpacer();
     fillSpecialChars();
     startGame();
+  }
+  function setOrigin() {
+    if (wordObj.origin) {
+      let origin = wordObj.origin;
+      if (origin.length > 250) {
+        origin = origin.slice(0, 250) + "...";
+      }
+      originTxt.textContent = origin;
+      originTxt.style.display = "";
+      originHdr.style.display = "";
+    }
   }
   function fillSpecialChars() {
     const specialChars = ["-", " "];
