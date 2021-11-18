@@ -94,9 +94,6 @@ button {
   background-position: center;
   transition: background 0.8s;
 }
-button:hover {
-  color: white;
-}
 button.green {
   background-color: #293e2a;
   color: #8ccf64;

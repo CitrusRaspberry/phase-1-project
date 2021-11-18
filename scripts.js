@@ -20,6 +20,7 @@ function init() {
   let badPoints = 0;
   let wordObj;
   let wordAnswerAsArray;
+  let guessedLetters = [];
 
   /////////////////////////////////////////////
   //// INTRO STYILING
@@ -59,7 +60,7 @@ function init() {
   function resetGame() {
     wordAnswerAsArray = [...wordObj.word.toUpperCase()];
     badPoints = 0;
-
+    guessedLetters = [];
   }
   function resetStyle() {
     wordContainer.replaceChildren();
@@ -82,6 +83,14 @@ function init() {
     if (firstLetter.textContent === ".") {
       firstLetter.textContent = "";
       firstLetter.style.color = "";
+    }
+  }
+  function disableLetter(letter) {
+    for (btn of letterBtns) {
+      if (btn.textContent === letter) {
+        btn.disabled = true;
+        btn.className = "letter big";
+      }
     }
   }
   function initMenu() {
@@ -171,6 +180,9 @@ function init() {
     });
 
   }
+  function checkIfLetterWasGuessed(letter) {
+    return guessedLetters.indexOf(letter) >= 0;
+  }
   function processInput(e) {
     let letterGuessed;
     if (e.type === "keydown") {
@@ -178,13 +190,18 @@ function init() {
     } else if (e.type === "click") {
       letterGuessed = e.target.textContent;
     }
-    if (isLetterMatch(letterGuessed)) {
-      const indexNums = findIndexNums(letterGuessed);
-      deleteSpacer();
-      updateWordGuess(indexNums, letterGuessed);
-    } else {
-      score.textContent = `${++badPoints} bad points`;
+    console.log(letterGuessed, guessedLetters);
+    if (!checkIfLetterWasGuessed(letterGuessed)) {
+      guessedLetters.push(letterGuessed);
+      if (isLetterMatch(letterGuessed)) {
+        const indexNums = findIndexNums(letterGuessed);
+        deleteSpacer();
+        updateWordGuess(indexNums, letterGuessed);
+      } else {
+        score.textContent = `${++badPoints} bad points`;
+      }
     }
+    disableLetter(letterGuessed);
     checkIfWon(wordAnswerAsArray.join(""));
   }
   function checkIfWon(wordAnswerAsString) {
