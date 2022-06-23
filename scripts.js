@@ -134,7 +134,7 @@ function init() {
         break;
       case "everything":
         color = "red";
-        urlRandomWord = "https://random-word-api.herokuapp.com/word?number=1&swear=0";
+        urlRandomWord = "https://random-word-api.herokuapp.com/word?number=1";
         break;
       default:
         console.error("MAYDAY!! URL CAN'T BE FOUND! WE'RE GOING DOWN!! *crash*");
