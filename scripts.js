@@ -5,7 +5,6 @@ function init() {
   const introButtons = introContent.querySelectorAll("button");
   const content = document.querySelector("#content");
   const letterBtns = content.querySelectorAll("button.letter");
-  const formContainer = content.querySelector("#form-container");
   const wordContainer = content.querySelector("#word-container");
   const lettersLeftTxt = content.querySelector("#letters-left");
   const originHdr = content.querySelector("#origin-header");
@@ -16,6 +15,7 @@ function init() {
   const popBtns = content.querySelectorAll("#popup button");
   const btnPlayAgain = content.querySelector("#popup button#play-again");
   const btnChangeMode = content.querySelector("#popup button#change-mode");
+  const btnBMC = content.querySelectorAll("button.bmc");
   let savedGameModeEvent;
   let badPoints = 0;
   let wordObj;
@@ -26,22 +26,22 @@ function init() {
   //// INTRO STYILING
   // CONFIG
   // in seconds
-  const introOutDuration = 1;
-  const contentInDuration = 1;
-  const introInDuration = 0.5;
+  const introOutDuration = 0.5;
+  const contentInDuration = 0.5;
+  const introInDuration = 0.18;
   const contentOutDuration = 0.75;
   const introMoveUpDuration = 0.4;
-  const introMoveUpDelay = 2;
+  const introMoveUpDelay = 0.5;
   const popupOutDuration = 0.5;
 
   function sceneSwap(e, sceneOut, sceneIn, outDuration, inDuration) {
     console.log("Gamemode picked:", e.target.name);
     sceneOut.className = "fade-out";
     sceneOut.style.animationName = "fadeOut";
-    sceneOut.style.animationDuration = `${outDuration}s`
+    sceneOut.style.animationDuration = `${outDuration}s`;
     sceneIn.className = "fade-in";
     sceneIn.style.animationName = "fadeIn";
-    sceneIn.style.animationDuration = `${inDuration}s`
+    sceneIn.style.animationDuration = `${inDuration}s`;
     setTimeout( () => {
       sceneOut.style.display = "none";
       sceneIn.style.display = "block";
@@ -276,6 +276,12 @@ function init() {
       } else {
         getRandomWord(urlRandomWord);
       }
+    });
+  }
+
+  for (let btn of btnBMC) {
+    btn.addEventListener('click', () => {
+      window.open('https://www.buymeacoffee.com/joshuaholmes', '_newtab')
     });
   }
 
