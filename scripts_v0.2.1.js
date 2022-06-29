@@ -21,6 +21,7 @@ function init() {
   let wordObj;
   let wordAnswerAsArray;
   let guessedLetters = [];
+  let failedFetches = 0;
 
   /////////////////////////////////////////////
   //// INTRO STYILING
@@ -35,7 +36,6 @@ function init() {
   const popupOutDuration = 0.5;
 
   function sceneSwap(e, sceneOut, sceneIn, outDuration, inDuration) {
-    console.log("Gamemode picked:", e.target.name);
     sceneOut.className = "fade-out";
     sceneOut.style.animationName = "fadeOut";
     sceneOut.style.animationDuration = `${outDuration}s`;
@@ -60,6 +60,7 @@ function init() {
   function resetGame() {
     wordAnswerAsArray = [...wordObj.word.toUpperCase()];
     badPoints = 0;
+    failedFetches = 0;
     guessedLetters = [];
     for (btn of letterBtns) {
       btn.disabled = false;
@@ -146,7 +147,6 @@ function init() {
     getRandomWord(urlRandomWord);
   }
   function renderGame() {
-    console.log("Word object -->", wordObj);
     score.textContent = `${badPoints} bad points`;
     defTxt.textContent = wordObj.meanings[0].definitions[0].definition;
     setOrigin();
@@ -188,7 +188,6 @@ function init() {
       btn.removeEventListener("click", processInput);
       btn.addEventListener("click", processInput);
     });
-
   }
   function checkIfLetterWasGuessed(letter) {
     return guessedLetters.indexOf(letter) >= 0;
@@ -200,7 +199,6 @@ function init() {
     } else if (e.type === "click") {
       letterGuessed = e.target.textContent;
     }
-    console.log(letterGuessed, guessedLetters);
     if (!checkIfLetterWasGuessed(letterGuessed)) {
       guessedLetters.push(letterGuessed);
       if (isLetterMatch(letterGuessed)) {
@@ -258,11 +256,21 @@ function init() {
     .then(data => cb(data))
     .catch(error => {
       console.error("HOLD THE PHONE!!! Fetch error -->", error);
+      failedFetches += 1;
       randomWordIfError ? getRandomWord(url) : console.error("randomWordIfError = false");
     });
   }
   function getRandomWord(urlRandomWord) {
-    fetchGET(urlRandomWord, data => dictionarySearchFor(data[0], urlRandomWord), true);
+    if (failedFetches < 5) {
+      fetchGET(urlRandomWord, data => dictionarySearchFor(data[0], urlRandomWord), true);
+    } else {
+      console.error('Maximum fetch attempts has been reached.');
+      displayError('Maximum attempts to find a word has been reached. Please try this app again later or try another game mode.');
+    }
+    
+  }
+  function displayError(message) {
+    defTxt.textContent = message;
   }
   function dictionarySearchFor(word, urlRandomWord) {
     const urlDictionary = "https://api.dictionaryapi.dev/api/v2/entries/en/";
