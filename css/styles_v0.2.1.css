@@ -16,10 +16,9 @@ h1, h2 {
   height: 100%;
 }
 #intro-container {
-  position: absolute;
   width: 100%;
-  bottom: 40%;
-  transform: translateY(40%);
+  margin-top: auto;
+  margin-bottom: auto;
   /* animation-name: introMoveUp; defined in scripts.js */
   /* animation-delay: defined in scripts.js */
   /* animation-duration: defined in scripts.js */
@@ -32,9 +31,7 @@ h1, h2 {
   display: flex;
   margin: auto;
 }
-@media (max-width: 1250px) {
 
-}
 #intro-content {
   opacity: 0;
   width: 100%;
@@ -44,30 +41,21 @@ h1, h2 {
   text-align: center;
 }
 #content {
+  position: absolute;
+  bottom: 0;
   display: none;
   opacity: 0;
   animation-name: fadeIn;
   animation-fill-mode: forwards;
   /* animation-duration: defined in scripts.js */
   animation-delay: 0s;
-  height: 100%;
   width: 100%;
   margin: 0;
 }
 #definition-container {
-  position: absolute;
-  bottom: 25%;
-  padding-top: 0;
   /* Changes based on size */
   width: 55%;
-  left: 50%;
-  transform: translate(-50%, -50px);
   /* --------------------- */
-}
-#form-container {
-  position: absolute;
-  height: 25%;
-  bottom: 0;
 }
 #letters-container {
   width: 55%;
@@ -160,9 +148,10 @@ button.small {
 }
 #popup {
   background: white;
-  width: 400px;
-  height: 350px;
-  margin: 150px auto;
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 img.bmc-icon {
@@ -222,8 +211,6 @@ button.bmc {
   }
   #definition-container {
     width: 100%;
-    left: auto;
-    transform: translate(0, -50px);
   }
   #letters-container {
     width: 100%;
@@ -259,20 +246,12 @@ button.bmc {
   #intro h2 {
     font-size: 1.3em;
   }
-  #intro-container {
-    height: 100%;
-    top: -40%;
-  }
+  
   #intro-text {
     padding: 0;
   }
   .word-letter {
     font-size: 1.5em;
-  }
-}
-@media (max-width: 414px) {
-  #popup {
-    width: 100%;
   }
 }
 @media (max-width: 365px) {
@@ -283,5 +262,10 @@ button.bmc {
 @media (max-width: 300px) {
   button.letter {
     font-size: 18px;
+  }
+}
+@media (max-width: 272px) {
+  button.small {
+    font-size: xx-small;
   }
 }
