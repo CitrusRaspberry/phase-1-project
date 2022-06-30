@@ -12,6 +12,13 @@
     <!-- <script defer src="https://www.wpromotions.eu/confetti.min.js"></script> -->
     <script defer type="text/javascript" src="./scripts/scripts_v0.2.1.js"></script>
     <script defer type="text/javascript" src="./scripts/confetti.min.js"></script>
+    <script defer type="text/javascript">
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./service-worker/sw.js');
+        })
+      }
+    </script>
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
     </style>

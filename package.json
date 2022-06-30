@@ -1,0 +1,24 @@
+{
+  "name": "dictionary-game",
+  "version": "0.2.1",
+  "description": "A vocabulary game based on the classic title \"Hang Man\", where a dictionary definition is used as a hint!",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serve": "http-server -p 3000 -c-1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joshua-holmes/dictionary-game.git"
+  },
+  "author": "Joshua Holmes",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/joshua-holmes/dictionary-game/issues"
+  },
+  "homepage": "https://github.com/joshua-holmes/dictionary-game#readme",
+  "dependencies": {
+    "http-server": "^14.1.1",
+    "workbox-cli": "^6.5.3"
+  }
+}
