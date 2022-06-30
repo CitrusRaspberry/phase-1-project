@@ -3,7 +3,7 @@ module.exports = {
 	globPatterns: [
 		'**/*.{css,html,js}'
 	],
-	swDest: './service-worker/sw.js',
+	swDest: './sw.js',
 	ignoreURLParametersMatching: [
 		/^utm_/,
 		/^fbclid$/
