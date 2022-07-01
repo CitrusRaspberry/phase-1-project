@@ -11,7 +11,8 @@ function init() {
   const originTxt = content.querySelector("#origin-text");
   const defTxt = content.querySelector("#definition-text");
   const score = content.querySelector("#score");
-  const popup = content.querySelector("#popup-container");
+  const winPopup = content.querySelector("#win-popup.popup-container");
+  const disconnectPopup = document.querySelector("#disconnect-popup.popup-container");
   const popBtns = content.querySelectorAll("#popup button");
   const btnPlayAgain = content.querySelector("#popup button#play-again");
   const btnChangeMode = content.querySelector("#popup button#change-mode");
@@ -21,7 +22,7 @@ function init() {
   let wordObj;
   let wordAnswerAsArray;
   let guessedLetters = [];
-  let failedFetches = 0;
+  let onReconnect = () => {}
 
   /////////////////////////////////////////////
   //// INTRO STYILING
@@ -54,13 +55,28 @@ function init() {
       introContent.classList.add("fade-in");
     }, introMoveUpDelay * 1000)
   }
-
+  function showPopup(element) {
+    element.style.display = "block";
+  }
+  function hidePopup(element) {
+    element.style.animationDuration = `${popupOutDuration}s`;
+    element.classList.add("fade-out");
+    setTimeout(() => {
+      element.style.display = "none";
+      element.classList.remove("fade-out");
+    }, popupOutDuration * 1000);
+  }
   /////////////////////////////////////////////////////
   //// GAME LOGIC
+  window.addEventListener('online', () => {
+    hidePopup(disconnectPopup)
+    onReconnect();
+    onReconnect = () => {};
+  });
+
   function resetGame() {
     wordAnswerAsArray = [...wordObj.word.toUpperCase()];
     badPoints = 0;
-    failedFetches = 0;
     guessedLetters = [];
     for (btn of letterBtns) {
       btn.disabled = false;
@@ -106,16 +122,8 @@ function init() {
   function initRestart(e) {
     sceneSwap(e, content, intro, contentOutDuration, introInDuration);
   }
-  function removePopup() {
-    popup.style.animationDuration = `${popupOutDuration}s`;
-    popup.classList.add("fade-out");
-    setTimeout(() => {
-      popup.style.display = "none";
-      popup.classList.remove("fade-out");
-    }, popupOutDuration * 1000);
-  }
   function initGame(e) {
-    removePopup();
+    hidePopup(winPopup);
     savedGameModeEvent = e;
     sceneSwap(e, intro, content, introOutDuration, contentInDuration);
     let urlRandomWord = "https://random-word-form.herokuapp.com/random/";
@@ -220,7 +228,7 @@ function init() {
     }
   }
   function winScreen() {
-    popup.style.display = "block";
+    showPopup(winPopup)
     confetti.start();
     setTimeout(confetti.stop, 3000);
   }
@@ -251,26 +259,27 @@ function init() {
     btnsObj.forEach(btn => btn.classList.add(color))
   }
   function fetchGET(url, cb, randomWordIfError) {
-    fetch(url)
-    .then(r => r.json())
-    .then(data => cb(data))
-    .catch(error => {
-      console.error("HOLD THE PHONE!!! Fetch error -->", error);
-      failedFetches += 1;
-      randomWordIfError ? getRandomWord(url) : console.error("randomWordIfError = false");
-    });
+    const get = () => {
+      fetch(url)
+      .then(r => r.json())
+      .then(data => {
+        onReconnect = () => {}
+        cb(data)
+      })
+      .catch(error => {
+        if (navigator.onLine) {
+          console.error("HOLD THE PHONE!!! Fetch error -->", error);
+        } else {
+          showPopup(disconnectPopup);
+        }
+        
+      })
+    };
+    onReconnect = get;
+    get();
   }
   function getRandomWord(urlRandomWord) {
-    if (failedFetches < 5) {
-      fetchGET(urlRandomWord, data => dictionarySearchFor(data[0], urlRandomWord), true);
-    } else {
-      console.error('Maximum fetch attempts has been reached.');
-      displayError('Maximum attempts to find a word has been reached. Please try this app again later or try another game mode.');
-    }
-    
-  }
-  function displayError(message) {
-    defTxt.textContent = message;
+    fetchGET(urlRandomWord, data => dictionarySearchFor(data[0], urlRandomWord), true);
   }
   function dictionarySearchFor(word, urlRandomWord) {
     const urlDictionary = "https://api.dictionaryapi.dev/api/v2/entries/en/";
