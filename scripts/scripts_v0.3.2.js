@@ -30,9 +30,8 @@ function init() {
   // in seconds
   const introOutDuration = 0.5;
   const contentInDuration = 0.5;
-  const introInDuration = 0.18;
-  const contentOutDuration = 0.75;
-  const introMoveUpDuration = 0.4;
+  const introInDuration = 0.16;
+  const contentOutDuration = 0.5;
   const introMoveUpDelay = 0.5;
   const popupOutDuration = 0.5;
 
@@ -45,13 +44,11 @@ function init() {
     sceneIn.style.animationDuration = `${inDuration}s`;
     setTimeout( () => {
       sceneOut.style.display = "none";
-      sceneIn.style.display = "block";
+      sceneIn.style.display = sceneIn === intro ? "flex" : "block";
     }, outDuration * 1000 );
   }
   function introMoveUp() {
     setTimeout( () => {
-      introContainer.style.animationDuration = `${introMoveUpDuration}s`;
-      introContainer.style.animationName = "introMoveUp";
       introContent.classList.add("fade-in");
     }, introMoveUpDelay * 1000)
   }
