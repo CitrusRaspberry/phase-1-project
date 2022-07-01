@@ -152,7 +152,7 @@ button.small {
   top: 50%;
   transform: translateY(-50%);
 }
-#error-popup {
+#disconnect-popup {
   background: #ff972b;
 }
 .screen-message {

@@ -1,6 +1,6 @@
 {
   "name": "dictionary-game",
-  "version": "0.3.0",
+  "version": "0.3",
   "description": "A vocabulary game based on the classic title \"Hang Man\", where a dictionary definition is used as a hint!",
   "main": "index.html",
   "scripts": {
