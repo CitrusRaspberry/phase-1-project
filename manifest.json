@@ -6,7 +6,7 @@
     "start_url": "/",
     "description": "A vocabulary game based on the classic title \"Hang Man\", where a dictionary definition is used as a hint!",
     "name": "The Dictionary Game",
-    "short_name": "DG",
+    "short_name": "Dictionary Game",
     "icons": [
         {
             "src": "./images/icon-192x192.png",
