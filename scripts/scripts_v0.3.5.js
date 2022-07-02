@@ -73,6 +73,10 @@ function init() {
     btn.addEventListener("click", initRestart)
   })
   closeX.addEventListener('click', () => hidePopup(winPopup))
+  document.addEventListener("keydown", processInput);
+  letterBtns.forEach(btn => {
+    btn.addEventListener("click", processInput);
+  });
 
   function resetGame() {
     wordAnswerAsArray = [...wordObj.word.toUpperCase()];
@@ -206,42 +210,39 @@ function init() {
     }
   }
   function startGame() {
-    document.removeEventListener("keydown", processInput);
-    document.addEventListener("keydown", processInput);
-    letterBtns.forEach(btn => {
-      btn.removeEventListener("click", processInput);
-      btn.addEventListener("click", processInput);
-    });
+    
   }
   function checkIfLetterWasGuessed(letter) {
     return guessedLetters.indexOf(letter) >= 0;
   }
   function processInput(e) {
-    let letterGuessed;
-    if (e.type === "keydown") {
-      letterGuessed = e.key.toUpperCase();
-    } else if (e.type === "click") {
-      letterGuessed = e.target.textContent;
-    }
-    if (!checkIfLetterWasGuessed(letterGuessed)) {
-      guessedLetters.push(letterGuessed);
-      if (isLetterMatch(letterGuessed)) {
-        const indexNums = findIndexNums(letterGuessed);
-        deleteSpacer();
-        updateWordGuess(indexNums, letterGuessed);
-      } else {
-        score.textContent = `${++badPoints} bad points`;
+    if (!checkIfWon() && defTxt.textContent !== 'loading...') {
+      let letterGuessed;
+      if (e.type === "keydown") {
+        letterGuessed = e.key.toUpperCase();
+      } else if (e.type === "click") {
+        letterGuessed = e.target.textContent;
       }
+      if (!checkIfLetterWasGuessed(letterGuessed)) {
+        guessedLetters.push(letterGuessed);
+        if (isLetterMatch(letterGuessed)) {
+          const indexNums = findIndexNums(letterGuessed);
+          deleteSpacer();
+          updateWordGuess(indexNums, letterGuessed);
+        } else {
+          score.textContent = `${++badPoints} bad points`;
+        }
+      }
+      disableLetter(letterGuessed);
+      if (checkIfWon()) {
+        winScreen();
+      };
     }
-    disableLetter(letterGuessed);
-    checkIfWon(wordAnswerAsArray.join(""));
   }
-  function checkIfWon(wordAnswerAsString) {
+  function checkIfWon() {
     const wordGuessElements = [...wordContainer.children];
     const wordGuessed = wordGuessElements.map(element => element.textContent).join("");
-    if (wordAnswerAsString === wordGuessed) {
-      winScreen();
-    }
+    return wordAnswerAsArray.join("") === wordGuessed;
   }
   function winScreen() {
     showPopup(winPopup)
@@ -276,10 +277,12 @@ function init() {
       for (let c of ['red', 'green', 'blue']) {
         btn.classList.remove(c);
       }
-      btn.classList.add(color);
+      if (!btn.className.includes('bmc')) {
+        btn.classList.add(color);
+      }
     })
   }
-  function fetchGET(url, cb, randomWordIfError) {
+  function fetchGET(url, cb) {
     const get = () => {
       fetch(url)
       .then(r => r.json())
@@ -293,14 +296,13 @@ function init() {
         } else {
           showPopup(disconnectPopup);
         }
-        
       })
     };
     onReconnect = get;
     get();
   }
   function getRandomWord(urlRandomWord) {
-    fetchGET(urlRandomWord, data => dictionarySearchFor(data[0], urlRandomWord), true);
+    fetchGET(urlRandomWord, data => dictionarySearchFor(data[0], urlRandomWord));
   }
   function dictionarySearchFor(word, urlRandomWord) {
     const urlDictionary = "https://api.dictionaryapi.dev/api/v2/entries/en/";
