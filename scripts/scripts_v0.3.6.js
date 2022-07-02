@@ -67,7 +67,11 @@ function init() {
   });
   introButtons.forEach(button => button.addEventListener("click", initGame));
   btnPlayAgain.forEach(btn => {
-    btn.addEventListener("click", () => initGame(savedGameModeEvent))
+    btn.addEventListener("click", () => {
+      if (wordObj) {
+        initGame(savedGameModeEvent)
+      }
+    })
   });
   btnChangeMode.forEach(btn => {
     btn.addEventListener("click", initRestart)
@@ -94,6 +98,7 @@ function init() {
     originTxt.style.display = "none";
     originHdr.style.display = "none";
     confetti.stop();
+    wordObj = null;
   }
   function createSpacer() {
     const firstLetter = wordContainer.firstChild;
@@ -216,7 +221,7 @@ function init() {
     return guessedLetters.indexOf(letter) >= 0;
   }
   function processInput(e) {
-    if (!checkIfWon() && defTxt.textContent !== 'loading...') {
+    if (!checkIfWon() && wordObj) {
       let letterGuessed;
       if (e.type === "keydown") {
         letterGuessed = e.key.toUpperCase();
