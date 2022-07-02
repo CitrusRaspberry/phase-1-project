@@ -30,9 +30,8 @@ function init() {
   // in seconds
   const introOutDuration = 0.5;
   const contentInDuration = 0.5;
-  const introInDuration = 0.16;
+  const introInDuration = 0.5;
   const contentOutDuration = 0.5;
-  const introMoveUpDelay = 0.5;
   const popupOutDuration = 0.5;
 
   function sceneSwap(e, sceneOut, sceneIn, outDuration, inDuration) {
@@ -46,11 +45,6 @@ function init() {
       sceneOut.style.display = "none";
       sceneIn.style.display = sceneIn === intro ? "flex" : "block";
     }, outDuration * 1000 );
-  }
-  function introMoveUp() {
-    setTimeout( () => {
-      introContent.classList.add("fade-in");
-    }, introMoveUpDelay * 1000)
   }
   function showPopup(element) {
     element.style.display = "block";
@@ -111,7 +105,6 @@ function init() {
     }
   }
   function initMenu() {
-    introMoveUp();
     introButtons.forEach(button => button.addEventListener("click", initGame));
     btnPlayAgain.addEventListener("click", e => initGame(savedGameModeEvent));
     btnChangeMode.addEventListener("click", initRestart)
