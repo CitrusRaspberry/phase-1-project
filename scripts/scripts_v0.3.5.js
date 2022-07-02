@@ -310,7 +310,6 @@ function init() {
       const isSuccess = !!data[0];
       if (isSuccess) {
         wordObj = data[0];
-        console.log(data)
         // wordObj.word = "for testing"; UNCOMMENT if you want to choose the word
         resetGame();
         renderGame();
