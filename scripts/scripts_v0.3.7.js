@@ -17,6 +17,7 @@ function init() {
   const btnPlayAgain = content.querySelectorAll("button.play-again");
   const btnChangeMode = content.querySelectorAll("button.change-mode");
   const btnBMC = content.querySelectorAll("button.bmc");
+  const bmcContainer = content.querySelector(".bmc-container");
   const closeX = content.querySelector("div.close-x")
   let savedGameModeEvent;
   let badPoints = 0;
@@ -81,6 +82,9 @@ function init() {
   letterBtns.forEach(btn => {
     btn.addEventListener("click", processInput);
   });
+  if (window.location.pathname === '/no-bmc') {
+    bmcContainer.style.display = 'none';
+  }
 
   function resetGame() {
     wordAnswerAsArray = [...wordObj.word.toUpperCase()];
