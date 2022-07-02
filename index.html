@@ -11,8 +11,8 @@
     <link rel="apple-touch-icon" href="./images/icon-192x192.png">
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="./css/relax.css">
-    <link rel="stylesheet" href="./css/styles_v0.3.3.css">
-    <script defer type="text/javascript" src="./scripts/scripts_v0.3.3.js"></script>
+    <link rel="stylesheet" href="./css/styles_v0.3.4.css">
+    <script defer type="text/javascript" src="./scripts/scripts_v0.3.4.js"></script>
     <script defer type="text/javascript" src="./scripts/confetti.min.js"></script>
     <script defer type="text/javascript">
       if ('serviceWorker' in navigator) {
@@ -67,8 +67,12 @@
       <div id="form-container" class="text-container">
         <h2>Now guess the word!</h2>
         <div class="center-children">
-          <p id="letters-left" class="text-small center-text"></p><p class="text-small center-text">|</p>
-          <p id="score" class="text-small center-text">0 bad points</p>
+          <p id="par" class="text-small center-text"></p><p class="text-small center-text">|</p>
+          <p id="score" class="text-small center-text"></p>
+        </div>
+        <div class="center-children">
+          <button class="small play-again" type="button">Next Word</button>
+          <button class="small change-mode" type="button">Change Mode</button>
         </div>
         <div id="letters-container">
           <div class="center-children">
@@ -105,13 +109,13 @@
       </div>
       <div id="win-popup" class="popup-container" style="display: none;">
         <div id="popup">
+          <div class="close-x">&#10006;</div>
           <div class="center-children text-container white-back">
             <h2>You won!!! Play again?</h2>
           </div>
           <div class="center-children text-container buttons">
-            <button id="play-again" class="small" type="button">Play Again</button>
-            <button id="change-mode" class="small" type="button">Change Mode</button>
-            
+            <button class="small play-again" type="button">Play Again</button>
+            <button class="small change-mode" type="button">Change Mode</button>
           </div>
           <div class="center-children buttons bmc-banner">
             <button class="bmc" class="small" type="button">

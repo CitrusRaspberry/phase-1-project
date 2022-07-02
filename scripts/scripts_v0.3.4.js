@@ -6,17 +6,18 @@ function init() {
   const content = document.querySelector("#content");
   const letterBtns = content.querySelectorAll("button.letter");
   const wordContainer = content.querySelector("#word-container");
-  const lettersLeftTxt = content.querySelector("#letters-left");
+  const parTxt = content.querySelector("#par");
   const originHdr = content.querySelector("#origin-header");
   const originTxt = content.querySelector("#origin-text");
   const defTxt = content.querySelector("#definition-text");
   const score = content.querySelector("#score");
   const winPopup = content.querySelector("#win-popup.popup-container");
   const disconnectPopup = document.querySelector("#disconnect-popup.popup-container");
-  const popBtns = content.querySelectorAll("#popup button");
-  const btnPlayAgain = content.querySelector("#popup button#play-again");
-  const btnChangeMode = content.querySelector("#popup button#change-mode");
+  const gameBtns = content.querySelectorAll("#content button");
+  const btnPlayAgain = content.querySelectorAll("button.play-again");
+  const btnChangeMode = content.querySelectorAll("button.change-mode");
   const btnBMC = content.querySelectorAll("button.bmc");
+  const closeX = content.querySelector("div.close-x")
   let savedGameModeEvent;
   let badPoints = 0;
   let wordObj;
@@ -64,6 +65,14 @@ function init() {
     onReconnect();
     onReconnect = () => {};
   });
+  introButtons.forEach(button => button.addEventListener("click", initGame));
+  btnPlayAgain.forEach(btn => {
+    btn.addEventListener("click", () => initGame(savedGameModeEvent))
+  });
+  btnChangeMode.forEach(btn => {
+    btn.addEventListener("click", initRestart)
+  })
+  closeX.addEventListener('click', () => hidePopup(winPopup))
 
   function resetGame() {
     wordAnswerAsArray = [...wordObj.word.toUpperCase()];
@@ -76,13 +85,11 @@ function init() {
   function resetStyle() {
     wordContainer.replaceChildren();
     score.textContent = "";
-    lettersLeftTxt.textContent = "";
+    parTxt.textContent = "";
     defTxt.textContent = "loading...";
     originTxt.style.display = "none";
     originHdr.style.display = "none";
     confetti.stop();
-    popBtns.forEach(btn => btn.className = "small");
-    letterBtns.forEach(btn => btn.className = "letter big");
   }
   function createSpacer() {
     const firstLetter = wordContainer.firstChild;
@@ -104,16 +111,13 @@ function init() {
       }
     }
   }
-  function initMenu() {
-    introButtons.forEach(button => button.addEventListener("click", initGame));
-    btnPlayAgain.addEventListener("click", e => initGame(savedGameModeEvent));
-    btnChangeMode.addEventListener("click", initRestart)
-  }
   function initRestart(e) {
     sceneSwap(e, content, intro, contentOutDuration, introInDuration);
   }
   function initGame(e) {
-    hidePopup(winPopup);
+    if (winPopup.style.display !== 'none') {
+      hidePopup(winPopup);
+    }
     savedGameModeEvent = e;
     sceneSwap(e, intro, content, introOutDuration, contentInDuration);
     let urlRandomWord = "https://random-word-form.herokuapp.com/random/";
@@ -140,15 +144,14 @@ function init() {
         alert("The dictionary cannot be reached. Please ask the developer to look at API URLs.");
     }
     resetStyle();
-    cngBtnsColor(letterBtns, color);
-    cngBtnsColor(popBtns, color);
+    cngBtnsColor(gameBtns, color);
     getRandomWord(urlRandomWord);
   }
   function renderGame() {
     score.textContent = `${badPoints} bad points`;
-    defTxt.textContent = wordObj.meanings[0].definitions[0].definition;
+    setDefinition();
     setOrigin();
-    lettersLeftTxt.textContent = `${wordObj.word.length} letters left`;
+    setPar();
     for (letter of wordObj.word) {
       const newLetter = document.createElement("div")
       newLetter.className = "word-letter";
@@ -157,6 +160,21 @@ function init() {
     createSpacer();
     fillSpecialChars();
     startGame();
+  }
+  function setDefinition() {
+    const mode = savedGameModeEvent.target.name;
+    const word = wordObj.word.toLowerCase();
+    let meaning = wordObj.meanings.find(m => m.partOfSpeech === mode);
+    if (!meaning) {
+      meaning = wordObj.meanings[0];
+    }
+    let definition = meaning.definitions.find(d => (
+      !d.definition.toLowerCase().includes(word)
+    ))?.definition;
+    if (!definition) {
+      definition = meaning.definitions[0].definition;
+    }
+    defTxt.textContent = definition;
   }
   function setOrigin() {
     if (wordObj.origin) {
@@ -168,6 +186,14 @@ function init() {
       originTxt.style.display = "";
       originHdr.style.display = "";
     }
+  }
+  function setPar() {
+    const wordLength = wordObj.word.length;
+    const uniqueLettersLength = new Set(wordObj.word).size;
+    const par = Math.floor((wordLength + uniqueLettersLength) / 3) + 2;
+    // Slightly harder
+    //const par = Math.ceil((wordLength + uniqueLettersLength) / 3) + 1;
+    parTxt.textContent = `par ${par}`;
   }
   function fillSpecialChars() {
     const specialChars = ["-", " "];
@@ -246,7 +272,12 @@ function init() {
     return isMatch;
   }
   function cngBtnsColor(btnsObj, color) {
-    btnsObj.forEach(btn => btn.classList.add(color))
+    btnsObj.forEach(btn => {
+      for (let c of ['red', 'green', 'blue']) {
+        btn.classList.remove(c);
+      }
+      btn.classList.add(color);
+    })
   }
   function fetchGET(url, cb, randomWordIfError) {
     const get = () => {
@@ -277,6 +308,7 @@ function init() {
       const isSuccess = !!data[0];
       if (isSuccess) {
         wordObj = data[0];
+        console.log(data)
         // wordObj.word = "for testing"; UNCOMMENT if you want to choose the word
         resetGame();
         renderGame();
@@ -291,10 +323,6 @@ function init() {
       window.open('https://www.buymeacoffee.com/joshuaholmes', '_newtab')
     });
   }
-
-  /////////////////////////////////////////////////////
-  //// GAME BEGINS
-  initMenu();
 }
 
 document.addEventListener("DOMContentLoaded", init)

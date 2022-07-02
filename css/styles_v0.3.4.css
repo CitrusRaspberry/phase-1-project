@@ -183,6 +183,14 @@ button.bmc {
   margin: 12px 0;
 }
 
+.close-x {
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 17px 20px;
+  cursor: pointer;
+}
+
 .fade-in {
   animation-name: fadeIn;
   animation-duration: 0.5s;
