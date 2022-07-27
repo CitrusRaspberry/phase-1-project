@@ -5,7 +5,9 @@
   "main": "index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "serve": "http-server -p 3000 -c-1"
+    "serve": "http-server -p 3000 -c-1",
+    "sw": "workbox generateSW workbox-config.js",
+    "build-android": "cd android && bubblewrap init --manifest=https://dictionary-game.jpholmes.com/manifest.json && bubblewrap build"
   },
   "repository": {
     "type": "git",
