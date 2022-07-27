@@ -30,11 +30,11 @@ function init() {
   //// INTRO STYILING
   // CONFIG
   // in seconds
-  const introOutDuration = 0.5;
-  const contentInDuration = 0.5;
-  const introInDuration = 0.5;
-  const contentOutDuration = 0.5;
-  const popupOutDuration = 0.5;
+  const introOutDuration = 0.3;
+  const contentInDuration = 0.3;
+  const introInDuration = 0.3;
+  const contentOutDuration = 0.3;
+  const popupOutDuration = 0.3;
 
   function sceneSwap(e, sceneOut, sceneIn, outDuration, inDuration) {
     sceneOut.className = "fade-out";
