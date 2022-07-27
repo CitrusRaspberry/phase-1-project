@@ -1,7 +1,7 @@
 {
     "theme_color": "#ff972b",
     "background_color": "#fff",
-    "display": "fullscreen",
+    "display": "standalone",
     "scope": "/",
     "start_url": "/",
     "description": "A vocabulary game based on the classic title \"Hang Man\", where a dictionary definition is used as a hint!",
