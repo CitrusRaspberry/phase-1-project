@@ -1,0 +1,12 @@
+[
+    {
+        "relation": ["delegate_permission/common.handle_all_urls"],
+        "target": {
+            "namespace": "android_app",
+            "package_name": "com.jpholmes.dictionary_game.twa",
+            "sha256_cert_fingerprints": [
+                "5F:B5:CB:8D:49:E6:F0:BE:38:4E:53:98:79:BD:F5:8A:97:31:CA:4A:C7:AD:2B:11:9C:ED:E2:57:A1:FF:C0:1C"
+            ]
+        }
+    }
+]
