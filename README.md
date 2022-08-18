@@ -1,9 +1,13 @@
 # Dictionary Game
 
+[Dictionary Game is now available on the Google Play Store!](https://play.google.com/store/apps/details?id=com.jpholmes.dictionary_game.twa)
+
 Welcome to the Dictionary Game app! Based on the classic game of hangman, you must use the available letters to guess a hidden word. In Dictionary Game, a random word is selected from the dictionary, and you must use the dictionary definition to help you guess the word!
 
 ## Demo
 View live demo: [dictionary-game.jpholmes.com](https://dictionary-game.jpholmes.com/).
+
+View on Google Play Store: [play.google.com/store/apps/details?id=com.jpholmes.dictionary_game.twa](https://play.google.com/store/apps/details?id=com.jpholmes.dictionary_game.twa)
 
 ![Dictionary Game demo gif](./dictionary-game.gif)
 
